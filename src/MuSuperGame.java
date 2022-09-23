@@ -5,6 +5,11 @@ public class MuSuperGame extends Game {
 
     public void initialize() {
         setScreenSize(3,4);
+        Fill();
+
+    }
+
+    private void Fill() {
         setCellValueEx(0,0, Color.GREEN,"",Color.ORANGE);
         setCellValueEx(1,1, Color.GREEN,"",Color.ORANGE);
         setCellValueEx(1,0, Color.GREEN,"",Color.ORANGE);
