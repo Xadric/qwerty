@@ -1,7 +1,7 @@
 import com.cs.engine.cell.Color;
 import com.cs.engine.cell.Game ;
 
-public class My extends Game {
+public class X_O_Game extends Game {
     public boolean f=true;
 
     public void initialize() {
