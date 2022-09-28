@@ -71,5 +71,19 @@ public class MinesWeeper extends Game {
         return listIn;
     }
 
+    @Override
+    public void onMouseLeftClick(int x, int y) {
+       openTitle(x,y);
+    }
 
+
+
+    @Override
+    public void onMouseRightClick(int x, int y) {
+
+    }
+
+    private void openTitle(int x, int y) {
+        setCellValueEx(x,y,Color.YELLOW,"\uD83D\uDCA7");
+    }
 }
