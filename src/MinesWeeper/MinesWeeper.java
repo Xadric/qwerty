@@ -13,6 +13,7 @@ public class MinesWeeper extends Game {
     private static final String FLAG = "\uD83D\uDEA9";
     private GameObject[][] gameField = new GameObject[SIDE][SIDE];
     private int countMinesOnField;
+    private int countFlags=0;
     List<GameObject> list= new ArrayList<>();
 
     public void initialize() {
@@ -28,12 +29,13 @@ public class MinesWeeper extends Game {
                 gameField[i][j]=new GameObject(j,i,getRandomNumber(10)==0);
                 if (gameField[i][j].isMine){
                     countMinesOnField++;
-                    list = getNighbours(gameField[1][1]);
+                    list = getNighbours(gameField[1][1],1,1);
                 }
 
             }
         }
         countMineNeighbours();
+        countFlags=countMinesOnField;
         System.out.println(countMinesOnField);
 
 
@@ -44,7 +46,7 @@ public class MinesWeeper extends Game {
         for (int i = 0; i < SIDE; i++) {
             for (int j = 0; j < SIDE; j++) {
                 if (!gameField[i][j].isMine){
-                    list=getNighbours(gameField[i][j]);
+                    list=getNighbours(gameField[i][j],i,j);
                     for (GameObject o : list) {
                         if (o.isMine){
                             gameField[i][j].countMineNeighbours++;
@@ -55,9 +57,8 @@ public class MinesWeeper extends Game {
         }
     }
 
-    private List<GameObject> getNighbours(GameObject gameObject) {
-        int x = gameObject.x;
-        int y = gameObject.y;
+    private List<GameObject> getNighbours(GameObject gameObject, int x , int y) {
+
         List<GameObject> listIn=new ArrayList<>();
         for (int i = x-1; i <= x+1; i++) {
             for (int j = y-1; j <=y+1; j++) {
@@ -80,10 +81,27 @@ public class MinesWeeper extends Game {
 
     @Override
     public void onMouseRightClick(int x, int y) {
+            markTitle(x,y);
+
+
+    }
+
+    private void markTitle(int x, int y) {
+        if (gameField[x][y].isFlag){
+        countFlags++;
+        gameField[x][y].isFlag=false;
+        setCellValueEx(x, y, Color.LIGHTGRAY, "");
+    }else
+        if (countFlags > 0) {
+            countFlags--;
+            gameField[x][y].isFlag=true;
+            setCellValueEx(x, y, Color.ORANGE, FLAG);
+        }
+        setScore(countFlags);
 
     }
 
     private void openTitle(int x, int y) {
-        setCellValueEx(x,y,Color.YELLOW,"\uD83D\uDCA7");
+        setCellValueEx(x,y,Color.YELLOW,MINE);
     }
 }

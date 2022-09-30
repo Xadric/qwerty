@@ -66,11 +66,11 @@ public class MinesWeeper extends Game {
         if (gameField[x][y].isMine){
             setCellColor(x,y,Color.DARKRED);
             setCellValue(x,y,MINE);
-            try {
-                TimeUnit.SECONDS.wait(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+//            try {
+//                TimeUnit.SECONDS.wait(1);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
             createGame();
         }else {
             setCellValueEx(x,y,Color.BLUE, String.valueOf(gameField[x][y].minesInRadius),Color.RED);
