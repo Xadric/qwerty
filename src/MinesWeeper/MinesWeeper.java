@@ -83,6 +83,9 @@ public class MinesWeeper extends Game {
     @Override
     public void onMouseRightClick(int x, int y) {
             markTile(x,y);
+            if (countFlags==0){
+//                gameWin();
+            }
 
 
     }
@@ -110,7 +113,19 @@ public class MinesWeeper extends Game {
                 setCellValueEx(x, y, Color.FIREBRICK, MINE);
                 gameOver();
             } else {
-                setCellValueEx(x, y, Color.BLUE, String.valueOf(gameField[x][y].countMineNeighbours));
+                if (gameField[x][y].countMineNeighbours!=0) {
+                    setCellValueEx(x, y, Color.BLUE, String.valueOf(gameField[x][y].countMineNeighbours));
+                }else {
+                    for (int i = x-1; i <= x+1; i++) {
+                        for (int j = y-1; j <=y+1; j++) {
+                            if ( !(i==x && j==y) && i>=0 && j>=0 && i<SIDE && j<SIDE ){
+                                setCellValueEx(x, y, Color.BLUE, String.valueOf(gameField[x][y].countMineNeighbours));
+                                openTile(i,j);
+                            }
+                        }
+
+                    }
+                }
             }
         }
     }
@@ -118,6 +133,8 @@ public class MinesWeeper extends Game {
     private void gameOver() {
         isGameStoped=true;
         showMessageDialog(Color.DARKBLUE,"Game over",Color.RED,40);
+
+
 
         gameField = new GameObject[SIDE][SIDE];
         countMinesOnField=0;
