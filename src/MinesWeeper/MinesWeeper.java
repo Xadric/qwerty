@@ -125,7 +125,7 @@ public class MinesWeeper extends Game {
 
                     }
                 }
-                if (countClosedTiles==countMinesOnField){
+                if (countClosedTiles==countMinesOnField-1){
                     win();
                 }
             }
