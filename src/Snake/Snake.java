@@ -23,8 +23,8 @@ public class Snake {
 
     public void draw(Game game) {
         Color snakeColor = Color.YELLOW;
-        if (!isAlive){
-            snakeColor=Color.RED;
+        if (!isAlive) {
+            snakeColor = Color.RED;
         }
         for (int i = 1; i < snakeParts.size(); i++) {
             game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, Color.NONE, BODY_SING, snakeColor, 75);
@@ -36,11 +36,13 @@ public class Snake {
     public void move(Apple apple) {
 
         GameObject head = createNewHead();
-        if (head.x < 0 || head.y<0 || head.x>SnakeGame.WIDTH-1 || head.y > SnakeGame.HEIGHT-1) {
+        if (head.x < 0 || head.y < 0 || head.x > SnakeGame.WIDTH - 1 || head.y > SnakeGame.HEIGHT - 1) {
             isAlive = false;
 
-        } else if (head.x==apple.x && head.y==apple.y) {
-            apple.isAlive=false;
+        } else if (checkCollision(head)) {
+            isAlive=false;
+        } else if (head.x == apple.x && head.y == apple.y) {
+            apple.isAlive = false;
             snakeParts.add(0, head);
 
 
@@ -53,10 +55,10 @@ public class Snake {
     private GameObject createNewHead() {
         int headX = snakeParts.get(0).x;
         int headY = snakeParts.get(0).y;
-        if (direction==Direction.LEFT) return new GameObject(headX - 1, headY);
-        else if (direction==Direction.RIGHT) return new GameObject(headX + 1, headY);
-        else if (direction==Direction.UP) return new GameObject(headX , headY- 1);
-        else if (direction==Direction.DOWN) return new GameObject(headX , headY+ 1);
+        if (direction == Direction.LEFT) return new GameObject(headX - 1, headY);
+        else if (direction == Direction.RIGHT) return new GameObject(headX + 1, headY);
+        else if (direction == Direction.UP) return new GameObject(headX, headY - 1);
+        else if (direction == Direction.DOWN) return new GameObject(headX, headY + 1);
         else return null;
     }
 
@@ -73,5 +75,15 @@ public class Snake {
                 break;
         }
         this.direction = direction;
+    }
+
+    public boolean checkCollision(GameObject gameObject) {
+        boolean f = false;
+        for (GameObject snakePart : snakeParts) {
+           if(snakePart.x==gameObject.x && snakePart.y==gameObject.y) {
+               f=true;
+           }
+        }
+        return f;
     }
 }

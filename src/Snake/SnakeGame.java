@@ -12,7 +12,7 @@ public class SnakeGame extends Game {
     public int score;
     private Apple apple;
     private Snake snake;
-    private boolean f=true;
+    private boolean isTurnDelayDone = true;
 
 
     public void initialize() {
@@ -42,10 +42,12 @@ public class SnakeGame extends Game {
         if (apple.isAlive) {
             apple.draw(this);
         } else {
-            apple = new Apple(getRandomNumber(WIDTH), getRandomNumber(HEIGHT));
-            apple.draw(this);
-            score++;
-            setScore(score);
+            do {
+                apple = new Apple(getRandomNumber(WIDTH), getRandomNumber(HEIGHT));
+                apple.draw(this);
+                score++;
+                setScore(score);
+            } while (snake.checkCollision(apple));
         }
     }
 
@@ -54,12 +56,11 @@ public class SnakeGame extends Game {
         super.onTurn(step);
         if (snake.isAlive) {
             snake.move(apple);
-            if (score%5==0 && score!=0 && turnDelay!=20 && f){
-                turnDelay-=20;
-                System.out.println(score);
-                f=false;
-            } else if  (score%5!=0 && !f) {
-                f=true;
+            if (score % 5 == 0 && score != 0 && turnDelay != 20 && !isTurnDelayDone) {
+                turnDelay -= 20;
+                isTurnDelayDone = true;
+            } else if (score % 5 != 0 && isTurnDelayDone) {
+                isTurnDelayDone = false;
             }
             setTurnTimer(turnDelay);
             drawScene();
