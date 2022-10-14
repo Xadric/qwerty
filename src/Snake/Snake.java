@@ -26,14 +26,14 @@ public class Snake {
         if (!isAlive){
             snakeColor=Color.RED;
         }
-        game.setCellValueEx(snakeParts.get(0).x, snakeParts.get(0).y, Color.NONE, HEAD_SING, snakeColor, 75);
         for (int i = 1; i < snakeParts.size(); i++) {
             game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, Color.NONE, BODY_SING, snakeColor, 75);
 
         }
+        game.setCellValueEx(snakeParts.get(0).x, snakeParts.get(0).y, Color.NONE, HEAD_SING, snakeColor, 75);
     }
 
-    public void move(Apple apple, int score, int turnDelay) {
+    public void move(Apple apple) {
 
         GameObject head = createNewHead();
         if (head.x < 0 || head.y<0 || head.x>SnakeGame.WIDTH-1 || head.y > SnakeGame.HEIGHT-1) {
@@ -42,10 +42,7 @@ public class Snake {
         } else if (head.x==apple.x && head.y==apple.y) {
             apple.isAlive=false;
             snakeParts.add(0, head);
-            if (score%5==0 && score!=0 && turnDelay!=100){
-                turnDelay-=100;
-                System.out.println(score);
-            }
+
 
         } else {
             snakeParts.add(0, head);
