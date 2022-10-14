@@ -78,12 +78,11 @@ public class Snake {
     }
 
     public boolean checkCollision(GameObject gameObject) {
-        boolean f = false;
         for (GameObject snakePart : snakeParts) {
            if(snakePart.x==gameObject.x && snakePart.y==gameObject.y) {
-               f=true;
+               return true;
            }
         }
-        return f;
+        return false;
     }
 }
