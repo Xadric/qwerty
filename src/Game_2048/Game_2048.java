@@ -11,7 +11,7 @@ public class Game_2048 extends Game {
 
     public void initialize() {
         setScreenSize(SIZE, SIZE);
-        CreateGame();
+        createGame();
         /*
         int k=2;
         for (int i = 0; i < 4; i++) {
@@ -42,6 +42,7 @@ public class Game_2048 extends Game {
 
     private Color getColorByValue(int cellValue) {
         Color color = switch (cellValue) {
+            case 0->Color.LIGHTGRAY;
             case 2 -> Color.RED;
             case 4 -> Color.ORANGE;
             case 8 -> Color.YELLOW;
@@ -53,12 +54,17 @@ public class Game_2048 extends Game {
             case 512 -> Color.DARKORANGE;
             case 1024 -> Color.GOLD;
             case 2048 -> Color.DARKGREEN;
-            default -> Color.LIGHTGRAY;
+            default -> win();
         };
         return color;
     }
 
-    private void CreateGame() {
+    private Color win() {
+        showMessageDialog(Color.YELLOW,"You Win!!!",Color.BLUE,75);
+        return null;
+    }
+
+    private void createGame() {
         score=0;
         gameField = new int[SIZE][SIZE];
         createNewNumer();
@@ -100,49 +106,74 @@ public class Game_2048 extends Game {
 
         }
 
+
+    }
+
+    private void checkField() {
+        System.out.println("chack");
+        int k=0;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (gameField[i][j]!=0){
+                    k++;
+                }
+            }
+        }
+        if (k==16){
+            showMessageDialog(Color.BLACK,"Fail",Color.RED,75);
+            createGame();
+        }
     }
 
     private void moveRight() {
         boolean move = false;
-        for (int i = 0; i < SIZE ; i++) {
+        for (int i = SIZE-1; i >=0 ; i--) {
+            boolean c1 = compressRow(i,2);
             boolean m = mergeRow(i,2);
-            boolean c = compressRow(i,2);
-            if(c || m)move=true;
+            boolean c2 = compressRow(i,2);
+            if(c1 || c2 || m)move=true;
         }
         if (move)createNewNumer();
+        checkField();
     }
 
 
     private void moveLeft() {
         boolean move = false;
         for (int i = 0; i < SIZE; i++) {
+            boolean c1 = compressRow(i,1);
             boolean m = mergeRow(i,1);
-            boolean c = compressRow(i,1);
-            if(c || m)move=true;
+            boolean c2 = compressRow(i,1);
+            if(c1 || c2 || m)move=true;
         }
         if (move) createNewNumer();
+        checkField();
     }
 
 
 
     private void moveDown() {
         boolean move = false;
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = SIZE-1; i >= 0; i--) {
+            boolean c1 = compressCol(i,2);
             boolean m = mergeCol(i,2);
-            boolean c = compressCol(i,2);
-            if(c || m)move=true;
+            boolean c2 = compressCol(i,2);
+            if(c1 || c2 || m)move=true;
         }
-       if (move)createNewNumer();
+        if (move)createNewNumer();
+        checkField();
     }
 
     private void moveUp() {
         boolean move = false;
         for (int i = 0; i < SIZE; i++) {
+            boolean c1 = compressCol(i,1);
             boolean m = mergeCol(i,1);
-            boolean c = compressCol(i,1);
-            if(c || m)move=true;
+            boolean c2 = compressCol(i,1);
+            if(c1 || c2 || m)move=true;
         }
         if (move)createNewNumer();
+        checkField();
     }
 
     private boolean mergeCol(int i, int k) {
@@ -158,7 +189,7 @@ public class Game_2048 extends Game {
                 }
             }
         else
-            for (int j = 1; j < SIZE; j++) {
+            for (int j = SIZE-1; j >=1; j--) {
                 if (gameField[i][j] == gameField[i][j- 1] && gameField[i][j] != 0) {
                     gameField[i][j] = gameField[i][j] + gameField[i][j - 1];
                     gameField[i][j - 1] = 0;
@@ -186,7 +217,7 @@ public class Game_2048 extends Game {
                 }
             }
         else{
-            for (int j = 0; j < SIZE-1; j++) {
+            for (int j = SIZE-1; j >= 0; j--) {
                 if(gameField[i][j]!=0){
                     int t = j;
                     f=true;
@@ -216,7 +247,7 @@ public class Game_2048 extends Game {
             }
         }
         else{
-            for (int i = 0; i < SIZE-1; i++) {
+            for (int i = SIZE-1; i >=0; i--) {
                 if(gameField[i][j]!=0){
                     int t = i;
                     f=true;
@@ -244,7 +275,7 @@ public class Game_2048 extends Game {
             }
         }
         else
-            for (int i = 1; i < SIZE; i++) {
+            for (int i = SIZE-1; i >=1; i--) {
                 if (gameField[i][j] == gameField[i - 1][j] && gameField[i][j] != 0) {
                     gameField[i][j] = gameField[i][j] + gameField[i - 1][j];
                     gameField[i - 1][j] = 0;
