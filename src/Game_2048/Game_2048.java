@@ -114,7 +114,7 @@ public class Game_2048 extends Game {
         int k=0;
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (gameField[i][j]!=0){
+                if (cheakCell(i,j)){
                     k++;
                 }
             }
@@ -123,6 +123,17 @@ public class Game_2048 extends Game {
             showMessageDialog(Color.BLACK,"Fail",Color.RED,75);
             createGame();
         }
+    }
+
+    private boolean cheakCell(int i, int j) {
+        boolean f=false;
+        if (gameField[i][j]!=0){
+            if (j<SIZE-1)if (gameField[i][j]==gameField[i][j+1])f=true;
+            if (j>1)if (gameField[i][j]==gameField[i][j-1])f=true;
+            if (i<SIZE-1)if (gameField[i][j]==gameField[i+1][j])f=true;
+            if (i>1)if (gameField[i][j]==gameField[i-1][j])f=true;
+        }
+        return f;
     }
 
     private void moveRight() {
