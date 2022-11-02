@@ -6,7 +6,7 @@ import com.cs.engine.cell.Game;
 public class LinesGame extends Game {
     private static final int SIDE = 9;
     private GameObject[][] gameField = new GameObject[SIDE][SIDE];
-    private ChaingingGameObject chaingingGameObject = new  ChaingingGameObject();
+    private ChaingingGameObject chaingingGameObject = new ChaingingGameObject();
 
     public void initialize() {
         setScreenSize(SIDE, SIDE);
@@ -53,13 +53,14 @@ public class LinesGame extends Game {
             gameField[x][y].ballColor = Color.FUCHSIA;
         }
     }
+
     private void drawScreen() {
         for (int i = 0; i < SIDE; i++) {
             for (int j = 0; j < SIDE; j++) {
                 if (gameField[i][j].ballColor == Color.NONE) {
                     setCellValueEx(i, j, Color.LIGHTGRAY, "");
                 } else {
-                    setCellValueEx(i, j, Color.LIGHTGRAY,"\u26AB",gameField[i][j].ballColor,75);
+                    setCellValueEx(i, j, Color.LIGHTGRAY, "\u26AB", gameField[i][j].ballColor, 75);
                 }
             }
         }
@@ -68,35 +69,85 @@ public class LinesGame extends Game {
     @Override
     public void onMouseLeftClick(int x, int y) {
         super.onMouseLeftClick(x, y);
-        if (gameField[x][y].ballColor==Color.NONE){
-            gameField[x][y].ballColor=gameField[chaingingGameObject.x][chaingingGameObject.y].ballColor;
-            gameField[chaingingGameObject.x][chaingingGameObject.y].ballColor=Color.NONE;
+
+        if (gameField[x][y].ballColor == Color.NONE && chaingingGameObject.isMarked) {
+            gameField[x][y].ballColor = gameField[chaingingGameObject.x][chaingingGameObject.y].ballColor;
+            gameField[chaingingGameObject.x][chaingingGameObject.y].ballColor = Color.NONE;
             chaingingGameObject.unMark();
             createBalls();
             drawScreen();
-        }else {
-            chaingingGameObject.chainge(x,y,true);
+        } else if (gameField[x][y].ballColor != Color.NONE) {
+            chaingingGameObject.chainge(x, y, true);
             drawScreen();
-            setCellValueEx(x, y, Color.BLACK,"\u26AB",gameField[x][y].ballColor,75);
+            setCellValueEx(x, y, Color.BLACK, "\u26AB", gameField[x][y].ballColor, 75);
+
         }
-        checkLine(x,y);
+        checkLine(x, y);
+
 
     }
 
     private void checkLine(int x, int y) {
-        int f;
-        for (int i = -5; i < 1; i++) {
-            f=0;
-            for (int j = 0; j < 5; j++) {
-                if (x+i>=0)
-                if (gameField[x+i][y].ballColor==gameField[x][y].ballColor){
-                    f++;
+        int sum;
+        for (int i = 0; i < SIDE - 5; i++) {
+            for (int j = 0; j < SIDE; j++) {
+                sum = 0;
+                for (int k = 0; k < 5; k++) {
+                    if (gameField[i + k][j].ballColor == gameField[i][j].ballColor && gameField[i][j].ballColor != Color.NONE) {
+                        sum++;
+                    }
+                }
+                if (sum >= 5) {
+                    System.out.println("utfou " + sum + " " + i + " " + j);
+                    for (int k = 0; k < sum; k++){
+                        gameField[i + k][j].ballColor=Color.NONE;
+
+                    }
+                    drawScreen();
                 }
             }
-            if (f==5){
-                System.out.println("utfou");
-                //haveFive();
+        }
+
+        for (int i = 0; i < SIDE; i++) {
+            for (int j = 0; j < SIDE - 5; j++) {
+                sum = 0;
+                for (int k = 0; k < 5; k++) {
+                    if (gameField[i][j + k].ballColor == gameField[i][j].ballColor && gameField[i][j].ballColor != Color.NONE) {
+                        sum++;
+                    }
+                }
+                if (sum >= 5) {
+                    System.out.println("utfou " + sum + " " + i + " " + j);
+                    for (int k = 0; k < sum; k++){
+                        gameField[i][j + k].ballColor=Color.NONE;
+
+                    }
+                    drawScreen();
+                }
+            }
+
+        }
+        for (int i = 0; i < SIDE-5; i++) {
+            for (int j = 0; j < SIDE - 5; j++) {
+                sum = 0;
+                for (int k = 0; k < 5; k++) {
+                    if (gameField[i+k][j + k].ballColor == gameField[i][j].ballColor && gameField[i][j].ballColor != Color.NONE) {
+                        sum++;
+                    }
+                }
+                if (sum >= 5) {
+                    System.out.println("utfou " + sum + " " + i + " " + j);
+                    for (int k = 0; k < sum; k++){
+                        gameField[i+k][j + k].ballColor=Color.NONE;
+
+                    }
+                    drawScreen();
+                }
             }
         }
+
+
     }
+
+
 }
