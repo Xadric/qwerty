@@ -117,7 +117,6 @@ public class LinesGame extends Game {
                     }
                 }
                 if (sum >= 5) {
-                    System.out.println("utfou " + sum + " " + i + " " + j);
                     for (int k = 0; k < sum; k++){
                         gameField[i][j + k].ballColor=Color.NONE;
 
@@ -136,7 +135,6 @@ public class LinesGame extends Game {
                     }
                 }
                 if (sum >= 5) {
-                    System.out.println("utfou " + sum + " " + i + " " + j);
                     for (int k = 0; k < sum; k++){
                         gameField[i+k][j + k].ballColor=Color.NONE;
 
