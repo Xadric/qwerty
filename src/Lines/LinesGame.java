@@ -71,11 +71,13 @@ public class LinesGame extends Game {
         super.onMouseLeftClick(x, y);
 
         if (gameField[x][y].ballColor == Color.NONE && chaingingGameObject.isMarked) {
-            gameField[x][y].ballColor = gameField[chaingingGameObject.x][chaingingGameObject.y].ballColor;
-            gameField[chaingingGameObject.x][chaingingGameObject.y].ballColor = Color.NONE;
-            chaingingGameObject.unMark();
-            createBalls();
-            drawScreen();
+            if (checkRoad(chaingingGameObject.x,chaingingGameObject.y,x,y)){
+                gameField[x][y].ballColor = gameField[chaingingGameObject.x][chaingingGameObject.y].ballColor;
+                gameField[chaingingGameObject.x][chaingingGameObject.y].ballColor = Color.NONE;
+                chaingingGameObject.unMark();
+                createBalls();
+                drawScreen();
+            }
         } else if (gameField[x][y].ballColor != Color.NONE) {
             chaingingGameObject.chainge(x, y, true);
             drawScreen();
@@ -85,6 +87,46 @@ public class LinesGame extends Game {
         checkLine(x, y);
 
 
+    }
+
+    private boolean checkRoad(int x, int y, int x1, int y1) {
+        for (int i = 0; i < SIDE; i++) {
+            for (int j = 0; j <SIDE; j++) {
+                gameField[i][j].isChecked =false;
+            }
+        }
+        System.out.println("gygu");
+        if (hasRoad(x, y, x1, y1)) {
+            System.out.println("yes");
+            return true;
+        }else {
+            System.out.println("no");
+            return false;
+        }
+    }
+
+    private boolean hasRoad(int x0, int y0, int x1, int y1) {
+        boolean f = true;
+        System.out.println(" "+x0+" "+y0+" "+x1+" "+y1);
+        gameField[x0][y0].isChecked =true;
+        if (x0==x1 && y0==y1){
+            return true;
+        } else{
+            f=false;
+            if (x0+1<SIDE && gameField[x0 + 1][y0].ballColor == Color.NONE && !gameField[x0+1][y0].isChecked)
+                if (hasRoad(x0 + 1, y0, x1, y1))  f=true;
+
+            if (y0+1<SIDE && gameField[x0][y0+ 1].ballColor == Color.NONE && !gameField[x0][y0+1].isChecked)
+                if (hasRoad(x0, y0 + 1, x1, y1))  f=true;
+
+            if (x0-1>0 &&gameField[x0 - 1][y0].ballColor == Color.NONE && !gameField[x0-1][y0].isChecked)
+                if (hasRoad(x0 - 1, y0, x1, y1))  f=true;
+
+            if (y0-1>0 && gameField[x0][y0- 1].ballColor == Color.NONE && !gameField[x0][y0-1].isChecked)
+                if (hasRoad(x0, y0 - 1, x1, y1))  f=true;
+        }
+
+        return f;
     }
 
     private void checkLine(int x, int y) {
