@@ -120,10 +120,10 @@ public class LinesGame extends Game {
             if (y0+1<SIDE && gameField[x0][y0+ 1].ballColor == Color.NONE && !gameField[x0][y0+1].isChecked)
                 if (hasRoad(x0, y0 + 1, x1, y1))  f=true;
 
-            if (x0-1>0 &&gameField[x0 - 1][y0].ballColor == Color.NONE && !gameField[x0-1][y0].isChecked)
+            if (x0-1>=0 &&gameField[x0 - 1][y0].ballColor == Color.NONE && !gameField[x0-1][y0].isChecked)
                 if (hasRoad(x0 - 1, y0, x1, y1))  f=true;
 
-            if (y0-1>0 && gameField[x0][y0- 1].ballColor == Color.NONE && !gameField[x0][y0-1].isChecked)
+            if (y0-1>=0 && gameField[x0][y0- 1].ballColor == Color.NONE && !gameField[x0][y0-1].isChecked)
                 if (hasRoad(x0, y0 - 1, x1, y1))  f=true;
         }
 
@@ -132,7 +132,7 @@ public class LinesGame extends Game {
 
     private void checkLine(int x, int y) {
         int sum;
-        for (int i = 0; i < SIDE - 5; i++) {
+        for (int i = 0; i < SIDE - 4; i++) {
             for (int j = 0; j < SIDE; j++) {
                 sum = 0;
                 for (int k = 0; k < 5; k++) {
@@ -152,7 +152,7 @@ public class LinesGame extends Game {
         }
 
         for (int i = 0; i < SIDE; i++) {
-            for (int j = 0; j < SIDE - 5; j++) {
+            for (int j = 0; j < SIDE - 4; j++) {
                 sum = 0;
                 for (int k = 0; k < 5; k++) {
                     if (gameField[i][j + k].ballColor == gameField[i][j].ballColor && gameField[i][j].ballColor != Color.NONE) {
