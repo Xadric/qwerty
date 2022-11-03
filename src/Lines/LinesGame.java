@@ -2,6 +2,7 @@ package Lines;
 
 import com.cs.engine.cell.Color;
 import com.cs.engine.cell.Game;
+import com.cs.engine.cell.Key;
 
 public class LinesGame extends Game {
     private static final int SIDE = 9;
@@ -189,5 +190,8 @@ public class LinesGame extends Game {
 
     }
 
-
+    @Override
+    public void onKeyPress(Key key) {
+        if (key==Key.SPACE)createGame();
+    }
 }
